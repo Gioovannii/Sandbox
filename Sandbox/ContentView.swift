@@ -7,11 +7,34 @@
 
 import SwiftUI
 
+struct User: Identifiable {
+    let id = UUID()
+    var name: String
+    var isContacted = false
+}
+
 struct ContentView: View {
+    @State private var users = [
+        User(name: "Taylor"),
+        User(name: "Justin"),
+        User(name: "Adele")
+    ]
+    
+    @State private var isOn = false
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        List($users) { $user in
+            HStack {
+                Text(user.name)
+                Spacer()
+                Toggle("User has been contacted",isOn: $user.isContacted)
+                    .labelsHidden()
+            }
+        }
+        //        Toggle("Example", isOn: $isOn)
+        //            .toggleStyle(SwitchToggleStyle())
+        //            .padding()
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
