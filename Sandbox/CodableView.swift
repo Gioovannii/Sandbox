@@ -28,7 +28,7 @@ func testVehicules() {
         let jsonData = try JSONEncoder().encode(traffic)
         let jsonString = String(decoding: jsonData, as: UTF8.self)
         print(jsonString)
-        let newValues = try JSONDecoder().decode([Vehicule].self, from: jsonData)
+        let _ = try JSONDecoder().decode([Vehicule].self, from: jsonData)
     } catch {
         
     }
