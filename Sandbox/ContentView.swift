@@ -21,10 +21,16 @@ extension URLSession {
         decoder.keyDecodingStrategy = keyDecodingStrategy
         decoder.dataDecodingStrategy = dataDecodingStrategy
         decoder.dateDecodingStrategy = dateDecodingStrategy
-
+        
         let decoded = try decoder.decode(T.self, from: data)
         return decoded
     }
+}
+
+struct Message: Codable, Identifiable {
+    let id: Int
+    let user: String
+    let text: String
 }
 
 struct ContentView: View {
