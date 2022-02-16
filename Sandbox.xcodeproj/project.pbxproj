@@ -15,6 +15,7 @@
 		7BA6BADC27BB4BAF0036A051 /* CodableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA6BADB27BB4BAF0036A051 /* CodableView.swift */; };
 		7BA6BADE27BB55CB0036A051 /* FibonacciView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA6BADD27BB55CB0036A051 /* FibonacciView.swift */; };
 		7BB6E7A227BCB01B0016BB4F /* AsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB6E7A127BCB01B0016BB4F /* AsyncView.swift */; };
+		7BB6E7A427BCC7FE0016BB4F /* SentMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB6E7A327BCC7FE0016BB4F /* SentMessageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		7BA6BADB27BB4BAF0036A051 /* CodableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableView.swift; sourceTree = "<group>"; };
 		7BA6BADD27BB55CB0036A051 /* FibonacciView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FibonacciView.swift; sourceTree = "<group>"; };
 		7BB6E7A127BCB01B0016BB4F /* AsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncView.swift; sourceTree = "<group>"; };
+		7BB6E7A327BCC7FE0016BB4F /* SentMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentMessageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				7BA6BADB27BB4BAF0036A051 /* CodableView.swift */,
 				7BA6BADD27BB55CB0036A051 /* FibonacciView.swift */,
 				7BB6E7A127BCB01B0016BB4F /* AsyncView.swift */,
+				7BB6E7A327BCC7FE0016BB4F /* SentMessageView.swift */,
 				7BA6BACF27BB40170036A051 /* Assets.xcassets */,
 				7BA6BAD127BB40170036A051 /* Preview Content */,
 			);
@@ -151,6 +154,7 @@
 			files = (
 				7BA6BADA27BB49900036A051 /* ListBindableView.swift in Sources */,
 				7BB6E7A227BCB01B0016BB4F /* AsyncView.swift in Sources */,
+				7BB6E7A427BCC7FE0016BB4F /* SentMessageView.swift in Sources */,
 				7BA6BADC27BB4BAF0036A051 /* CodableView.swift in Sources */,
 				7BA6BACE27BB40160036A051 /* ContentView.swift in Sources */,
 				7BA6BACC27BB40160036A051 /* SandboxApp.swift in Sources */,
