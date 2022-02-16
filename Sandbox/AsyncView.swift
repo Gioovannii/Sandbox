@@ -53,9 +53,36 @@ struct AsyncView: View {
         }
     }
     
-    func fetchInbox() async throws -> [Message] {
+    //    func fetchInbox() async throws -> [Message] {
+    //        let inboxURL = URL(string: "https://hws.dev/inbox.json")!
+    //        return try await URLSession.shared.decode(from: inboxURL)
+    //    }
+    
+    func fetchInbox(completion: @escaping (Result<[Message], Error>) -> Void) {
         let inboxURL = URL(string: "https://hws.dev/inbox.json")!
-        return try await URLSession.shared.decode(from: inboxURL)
+        
+        URLSession.shared.dataTask(with: inboxURL) { data, response, error in
+            if let data = data {
+                if let messages = try? JSONDecoder().decode([Message].self, from: data) {
+                    completion(.success(messages))
+                }
+            } else if let error = error {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+    
+    func fetchInbox() async throws -> [Message] {
+        try await withCheckedThrowingContinuation { continuation in
+            fetchInbox { result in
+                switch result {
+                case .success(let messages):
+                    continuation.resume(returning: messages)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
 }
 
