@@ -35,17 +35,37 @@ struct Message: Codable, Identifiable {
 
 struct AsyncView: View {
     @State private var inbox = [Message]()
+    @State private var sent = [Message]()
+    
+    @State private var selectedBox = "Inbox"
+    let messageBoxes = ["Inbox", "Sent"]
+    
+    var messages: [Message] {
+        if selectedBox == "Inbox" {
+            return inbox
+        } else {
+            return sent
+        }
+    }
     
     var body: some View {
         NavigationView {
-            List(inbox) { message in
+            List(messages) { message in
                 Text("\(message.user): ").bold() +
                 Text(message.text)
+                
             }
             .navigationTitle("Inbox")
+            .toolbar {
+                Picker("Select a message box", selection: $selectedBox) {
+                    ForEach(messageBoxes, id: \.self, content: Text.init)
+                }
+                .pickerStyle(.segmented)
+            }
             .task {
                 do {
                     inbox = try await fetchInbox()
+                    sent = try await fetchSent()
                 } catch {
                     print(error.localizedDescription)
                 }
@@ -53,37 +73,46 @@ struct AsyncView: View {
         }
     }
     
-    //    func fetchInbox() async throws -> [Message] {
-    //        let inboxURL = URL(string: "https://hws.dev/inbox.json")!
-    //        return try await URLSession.shared.decode(from: inboxURL)
-    //    }
-    
-    func fetchInbox(completion: @escaping (Result<[Message], Error>) -> Void) {
-        let inboxURL = URL(string: "https://hws.dev/inbox.json")!
-        
-        URLSession.shared.dataTask(with: inboxURL) { data, response, error in
-            if let data = data {
-                if let messages = try? JSONDecoder().decode([Message].self, from: data) {
-                    completion(.success(messages))
-                }
-            } else if let error = error {
-                completion(.failure(error))
-            }
-        }.resume()
-    }
-    
     func fetchInbox() async throws -> [Message] {
-        try await withCheckedThrowingContinuation { continuation in
-            fetchInbox { result in
-                switch result {
-                case .success(let messages):
-                    continuation.resume(returning: messages)
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+        let inboxURL = URL(string: "https://hws.dev/inbox.json")!
+        return try await URLSession.shared.decode(from: inboxURL)
     }
+    
+    func fetchSent() async throws -> [Message] {
+        let sentURL = URL(string: "https://hws.dev/sent.json")!
+        return try await URLSession.shared.decode(from: sentURL)
+    }
+    
+    //    func fetchInbox(completion: @escaping (Result<[Message], Error>) -> Void) {
+    //        let inboxURL = URL(string: "https://hws.dev/inbox.json")!
+    //
+    //        URLSession.shared.dataTask(with: inboxURL) { data, response, error in
+    //            if let data = data {
+    //                if let messages = try? JSONDecoder().decode([Message].self, from: data) {
+    //                    completion(.success(messages))
+    //                    return
+    //                }
+    //            } else if let error = error {
+    //                completion(.failure(error))
+    //                return
+    //            }
+    //
+    //            completion(.success([]))
+    //        }.resume()
+    //    }
+    //
+    //    func fetchInbox() async throws -> [Message] {
+    //        try await withCheckedThrowingContinuation { continuation in
+    //            fetchInbox { result in
+    //                switch result {
+    //                case .success(let messages):
+    //                    continuation.resume(returning: messages)
+    //                case .failure(let error):
+    //                    continuation.resume(throwing: error)
+    //                }
+    //            }
+    //        }
+    //    }
 }
 
 struct AsyncView_Previews: PreviewProvider {
