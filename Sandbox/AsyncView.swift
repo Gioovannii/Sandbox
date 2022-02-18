@@ -133,6 +133,8 @@ struct AsyncView_Previews: PreviewProvider {
 //        }.resume()
 //    }
 //
+// MARK: - Async await with throwing continuation
+
 //    func fetchInbox() async throws -> [Message] {
 //        try await withCheckedThrowingContinuation { continuation in
 //            fetchInbox { result in
