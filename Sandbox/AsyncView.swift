@@ -62,20 +62,34 @@ struct AsyncView: View {
                 }
                 .pickerStyle(.segmented)
             }
-            .task { fetchData() }
-        }
-    }
-    
-    func fetchData() {
-        Task {
-            let inboxURL = URL(string: "https://hws.dev/inbox.json")!
-            inbox = try await URLSession.shared.decode([Message].self, from: inboxURL)
-            
-        }
-        
-        Task {
-            let sentURL = URL(string: "https://hws.dev/sent.json")!
-            sent = try await URLSession.shared.decode([Message].self, from: sentURL)
+            .task {
+                do {
+                    let inboxTask = Task { () -> [Message] in
+                        print(Task.currentPriority)
+                        let inboxURL = URL(string: "https://hws.dev/inbox.json")!
+                        return try await URLSession.shared.decode([Message].self, from: inboxURL)
+                    }
+                    
+                    let sentTask = Task { () -> [Message] in
+                        let sentURL = URL(string: "https://hws.dev/sent.json")!
+                        return try await URLSession.shared.decode([Message].self, from: sentURL)
+                    }
+                    
+                    inbox = try await inboxTask.value
+                    sent = try await sentTask.value
+                    
+                    // MARK: - Handle as Result type
+                    
+                    //                    let inboxResult = await inboxTask.result
+                    //                    let sentResult = await sentTask.result
+                    //
+                    //                    inbox = try inboxResult.get()
+                    //                    sent = try sentResult.get()
+                    
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
         }
     }
 }
