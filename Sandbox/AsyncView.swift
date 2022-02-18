@@ -64,16 +64,20 @@ struct AsyncView: View {
             }
             .task {
                 do {
-                    let inboxURL = URL(string: "https://hws.dev/inbox.json")!
-                    let sentURL = URL(string: "https://hws.dev/sent.json")!
+                    let inboxTask = Task { () -> [Message] in
+                        let inboxURL = URL(string: "https://hws.dev/inbox.json")!
+                        return try await URLSession.shared.decode([Message].self, from: inboxURL)
+                        
+                    }
                     
-                    async let inboxItems = URLSession.shared.decode([Message].self, from: inboxURL)
-                    async let sentItems = URLSession.shared.decode([Message].self, from: sentURL)
+                    let sentTask = Task { () -> [Message] in
+                        let sentURL = URL(string: "https://hws.dev/sent.json")!
+                        return try await URLSession.shared.decode([Message].self, from: sentURL)
+                    }
+                  
+                    inbox = try await inboxTask.value
+                    sent = try await sentTask.value
                     
-                    inbox = try await inboxItems
-                    sent = try await sentItems
-//                    inbox = try await fetchInbox()
-//                    sent = try await fetchSent()
                 } catch {
                     print(error.localizedDescription)
                 }
