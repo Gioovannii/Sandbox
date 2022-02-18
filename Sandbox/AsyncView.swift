@@ -115,6 +115,8 @@ struct AsyncView_Previews: PreviewProvider {
 }
 
 
+// MARK: - Old Way
+
 //    func fetchInbox(completion: @escaping (Result<[Message], Error>) -> Void) {
 //        let inboxURL = URL(string: "https://hws.dev/inbox.json")!
 //
