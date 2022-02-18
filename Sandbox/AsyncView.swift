@@ -94,6 +94,20 @@ struct AsyncView: View {
     }
 }
 
+//    func fetchData() {
+//        Task {
+//            let inboxURL = URL(string: "https://hws.dev/inbox.json")!
+//            inbox = try await URLSession.shared.decode([Message].self, from: inboxURL)
+//
+//        }
+//
+//        Task {
+//            let sentURL = URL(string: "https://hws.dev/sent.json")!
+//            sent = try await URLSession.shared.decode([Message].self, from: sentURL)
+//        }
+//    }
+//}
+
 struct AsyncView_Previews: PreviewProvider {
     static var previews: some View {
         AsyncView()
