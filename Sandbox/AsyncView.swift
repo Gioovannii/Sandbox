@@ -22,6 +22,10 @@ func factors(for number: Int) async -> [Int] {
             result.append(check)
             await Task.yield()
         }
+        
+        if Task.isCancelled {
+            return result
+        }
     }
     
     return result
@@ -36,6 +40,7 @@ extension URLSession {
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate
     ) async throws -> T {
         let (data, _) = try await data(from: url)
+//        try Task.checkCancellation()
         
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = keyDecodingStrategy
@@ -95,6 +100,8 @@ struct AsyncView: View {
                         let sentURL = URL(string: "https://hws.dev/sent.json")!
                         return try await URLSession.shared.decode([Message].self, from: sentURL)
                     }
+                    
+                    inboxTask.cancel()
                     
                     inbox = try await inboxTask.value
                     sent = try await sentTask.value
