@@ -14,6 +14,19 @@ extension Task where Success == Never, Failure == Never {
         try await sleep(nanoseconds: duration)
     }
 }
+
+func factors(for number: Int) async -> [Int] {
+    var result = [Int]()
+    for check in 1...number {
+        if number.isMultiple(of: check) {
+            result.append(check)
+            await Task.yield()
+        }
+    }
+    
+    return result
+}
+
 extension URLSession {
     func decode<T: Decodable>(
         _ type: T.Type = T.self,
@@ -78,6 +91,7 @@ struct AsyncView: View {
                     }
                     
                     let sentTask = Task { () -> [Message] in
+                        //                        try await Task.sleep(seconds: 1)
                         let sentURL = URL(string: "https://hws.dev/sent.json")!
                         return try await URLSession.shared.decode([Message].self, from: sentURL)
                     }
